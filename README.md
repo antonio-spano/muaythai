@@ -1,1 +1,1 @@
-https://github.com/antonio-spano/muaythai
+A Vite+React Muay Thai Combo web app
