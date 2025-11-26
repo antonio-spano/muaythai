@@ -43,20 +43,27 @@ function generateCombo() {
 
   return combo;
 }
+/*
+function startWorkout(time) {
+  const idTimer = setInterval(() => {
+    let combo = generateCombo();
+    setCombo
+  }, time);
 
-function startWorkout() {
-}
+  clearInterval(idTimer);
+} */
 
-app.get("/combo", (req, res) => {
+app.get("/api/combo", (req, res) => {
   const result = generateCombo();
   console.log("Generata: ", result);
   res.json({ combo: result });
 });
 
-app.post("/echo", (req, res) => {
-  const input = req.body.delay;
+app.post("/api/echo", (req, res) => {
+  const input = req.body.numero;
   console.log("Ho ricevuto: ", input);
-  const output = startWorkout();
+  const result = generateCombo();
+  res.json({ combo: result });
 });
 
 app.listen(PORT, () => {
