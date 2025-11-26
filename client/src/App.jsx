@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { useEffect } from "react";
 
 function App() {
   const [combo, setCombo] = useState("Premi il tasto per allenarti");
@@ -36,16 +37,27 @@ function App() {
     //setServerReply(data.combo);
     setCombo(data.combo);
   };
-
+  /*
   const startWorkout = () => {
     const timer = setInterval(() => {
       getNewCombo();
     }, time);
 
     return () => {
-      clearInterval(idTimer);
+      clearInterval(timer);
     };
-  };
+  }; */
+
+  useEffect(() => {
+    let id = null;
+    if (isRunning) {
+      id = setInterval(() => {
+        getNewCombo();
+      }, time);
+    }
+
+    return () => clearInterval(id);
+  }, [isRunning]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -69,7 +81,7 @@ function App() {
       </div>
 
       <button
-        onClick={startWorkout}
+        onClick={() => setIsRunning(!isRunning)}
         style={{ padding: "10px 20px", fontSize: "16px" }}
       >
         Start workout 🥊
