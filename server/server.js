@@ -22,6 +22,10 @@ const side = ["left", "right"];
 const bodypart = ["low", "high", "body"];
 const combolen = 2;
 
+const delay = 5;
+const sessiontime = 90;
+const pause = 30;
+
 function generateCombo() {
   let combo = "";
 
@@ -40,15 +44,19 @@ function generateCombo() {
   return combo;
 }
 
+function startWorkout() {
+}
+
 app.get("/combo", (req, res) => {
   const result = generateCombo();
   console.log("Generata: ", result);
   res.json({ combo: result });
 });
 
-// Test Route
-app.get("/", (req, res) => {
-  res.json({ message: "Backend connesso con successo!" });
+app.post("/echo", (req, res) => {
+  const input = req.body.delay;
+  console.log("Ho ricevuto: ", input);
+  const output = startWorkout();
 });
 
 app.listen(PORT, () => {

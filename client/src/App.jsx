@@ -30,7 +30,7 @@ function App() {
         onClick={getNewCombo}
         style={{ padding: "10px 20px", fontSize: "16px" }}
       >
-        Generate Combo
+        Start workout @s🥊
       </button>
     </div>
   );
