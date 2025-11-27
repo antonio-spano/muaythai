@@ -49,19 +49,28 @@ function App() {
   }; */
 
   useEffect(() => {
-    let id = null;
-    if (isRunning) {
-      id = setInterval(() => {
-        getNewCombo();
-      }, time);
-    }
+    let idFreq = null;
+    let idTimer = null;
 
-    return () => clearInterval(id);
+    if (!isRunning) return;
+
+    idFreq = setInterval(() => {
+      getNewCombo();
+    }, time);
+    idTimer = setTimeout(() => {
+      clearInterval(idFreq);
+      setIsRunning(false);
+    }, 3000);
+
+    return () => {
+      clearInterval(idTimer);
+      clearInterval(idFreq);
+    };
   }, [isRunning]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Muay Thai Combo Caller</h1>
+      <h1>MTCC</h1>
 
       <div
         style={{ padding: "20px", border: "1px solid #333", margin: "20px" }}

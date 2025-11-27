@@ -22,9 +22,13 @@ const side = ["left", "right"];
 const bodypart = ["low", "high", "body"];
 const combolen = 2;
 
-const delay = 5;
-const sessiontime = 90;
-const pause = 30;
+//const delay = 5;
+//const sessiontime = 90;
+//const pause = 30;
+
+const difficulty = [5, 3, 2];
+const session = [60, 120, 300];
+const pause = [60, 30, 15];
 
 function generateCombo() {
   let combo = "";
