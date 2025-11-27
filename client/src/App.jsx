@@ -8,6 +8,8 @@ function App() {
   const [serverReply, setServerReply] = useState("Awaiting server reply");
   const [isRunning, setIsRunning] = useState(false);
   const [tempo, setTempo] = useState(30 * 1000);
+  const [choice, setChoice] = useState("Select difficulty");
+  const [difficulty, setDifficulty] = useState([60, 6, 60]);
 
   const getNewCombo = async () => {
     try {
@@ -21,9 +23,10 @@ function App() {
     }
   };
 
-  const sendData = async () => {
+  const sendData = async (diff) => {
     // Prepariamo il pacco
-    const parcel = { numero: time };
+    setChoice(diff);
+    const parcel = { difficulty: diff };
 
     // Spediamo
     const response = await fetch("http://localhost:5000/api/echo", {
@@ -35,32 +38,24 @@ function App() {
     // Leggiamo la ricevuta di ritorno
     const data = await response.json();
     //setServerReply(data.combo);
-    setCombo(data.combo);
+    //setCombo(data.combo);
+    setDifficulty(data.difficulty);
   };
-  /*
-  const startWorkout = () => {
-    const timer = setInterval(() => {
-      getNewCombo();
-    }, time);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }; */
 
   useEffect(() => {
     let idFreq = null;
     let idTimer = null;
 
     if (!isRunning) return;
-
+    console.log("difficulty: ", difficulty);
+    getNewCombo();
     idFreq = setInterval(() => {
       getNewCombo();
-    }, time);
+    }, difficulty[1] * 1000);
     idTimer = setTimeout(() => {
       clearInterval(idFreq);
       setIsRunning(false);
-    }, 3000);
+    }, difficulty[0] * 1000);
 
     return () => {
       clearInterval(idTimer);
@@ -70,28 +65,29 @@ function App() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>MTCC</h1>
+      <h1>Muay Thai</h1>
 
       <div
-        style={{ padding: "20px", border: "1px solid #333", margin: "20px" }}
+        style={{ padding: "20px", border: "1px solid #333", margin: "10px" }}
       >
         <strong>{combo}</strong>
       </div>
 
-      <div
-        style={{ padding: "20px", border: "1px solid #333", margin: "20px" }}
+      <select
+        value={choice} // A. Mostra quello che c'è in memoria
+        onChange={(e) => sendData(e.target.value)} // B. Se l'utente cambia, aggiorna la memoria
+        style={{ padding: "15px 20px", fontSize: "18px", margin: "10px" }}
       >
-        <input
-          type="number"
-          placeholder="Session time (s)"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        />
-      </div>
+        <option value="0">Easy</option>
+        <option value="1">Normal</option>
+        <option value="2">Hard</option>
+        <option value="3">Spartan</option>
+      </select>
+      <br></br>
 
       <button
         onClick={() => setIsRunning(!isRunning)}
-        style={{ padding: "10px 20px", fontSize: "16px" }}
+        style={{ padding: "15px 20px", fontSize: "16px", margin: "10px" }}
       >
         Start workout 🥊
       </button>

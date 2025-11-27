@@ -26,9 +26,11 @@ const combolen = 2;
 //const sessiontime = 90;
 //const pause = 30;
 
-const difficulty = [5, 3, 2];
-const session = [60, 120, 300];
-const pause = [60, 30, 15];
+//0: tempo sessione (s), 1: delay fra colpi (s), 2: durata pausa (s)
+const easy = [60, 6, 60];
+const normal = [120, 5, 60];
+const hard = [180, 5, 60];
+const spartan = [300, 4, 45];
 
 function generateCombo() {
   let combo = "";
@@ -64,10 +66,18 @@ app.get("/api/combo", (req, res) => {
 });
 
 app.post("/api/echo", (req, res) => {
-  const input = req.body.numero;
+  const input = req.body.difficulty;
   console.log("Ho ricevuto: ", input);
-  const result = generateCombo();
-  res.json({ combo: result });
+  const result = input == "0"
+    ? easy
+    : input == "1"
+      ? normal
+      : input == "2"
+        ? hard
+        : input == "3"
+          ? spartan
+          : easy;
+  res.json({ difficulty: result });
 });
 
 app.listen(PORT, () => {
