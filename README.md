@@ -1,1 +1,1 @@
-A Vite+React Muay Thai Combo web app
+A Vite+React Muay Thai Combo web app **just for fun**
